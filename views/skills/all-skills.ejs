@@ -23,6 +23,20 @@
                     <p><%= error %> </p>
                 </div>
             <% } %> 
+
+            <% if(skill) { %>
+                <div class="uk-alert-success" uk-alert>
+                    <a class="uk-alert-close" uk-close></a>
+                    <p class="uk-margin-remove">Successfully removed <%= skill.name %>. <button style="border-color: #32d296" class="uk-button uk-button-default uk-button-small uk-text-success" type="submit" form="undo">Undo</button></p>
+                    <form hidden id="undo" method="POST" action="/skills/add">
+                        <input name="name" type="text" value="<%= skill.name %>">
+                        <label><input class="uk-radio" type="radio" name="isDifficult" value="false" <% if(!skill.isDifficult) { %> checked="checked" <% } %>> Easy</label><br>
+                        <label><input class="uk-radio" type="radio" name="isDifficult" value="true" <% if(skill.isDifficult) { %> checked="checked" <% } %>> Hard</label>
+                        <textarea name="description" rows="5" ><%= skill.description %></textarea>
+                        <input class="uk-range" name="aptitude" type="range" value="<%= skill.aptitude %>>" min="1" max="5" step="1">
+                    </form>
+                </div>
+            <% } %>
             
             <div class="uk-child-width-1-3@s uk-grid-match" uk-grid>
 
@@ -208,7 +222,7 @@
                 <div class="uk-modal-body">
                     <form class="uk-form-stacked" id="remove-skill-<%= skill._id %>" action=<%= `/skills/${skill._id}?_method=DELETE` %> method="POST">
                         <div class="uk-alert-danger" uk-alert>
-                            <p><span uk-icon="warning"></span> Are you sure you want to delete <b><%= skill.name %></b>? This action cannot be undone.</p>
+                            <p><span uk-icon="warning"></span> Are you sure you want to delete <b><%= skill.name %></b>?</p>
                         </div>
                     </form>
                 </div>

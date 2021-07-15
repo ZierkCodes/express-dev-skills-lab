@@ -31,19 +31,23 @@ function findAll(req, res) {
         if(!error && req.error) {
             error = req.error
         }
-        return res.render('skills/all-skills', {error, skills})
+        let skill = null
+        return res.render('skills/all-skills', {error, skills, skill})
     })
     
 }
 
-function updateById(req, res) {
+function updateById(req, res, next) {
     skillsDB.updateById(req.params.id, req.body, (error, skills) => {
-        return res.render('skills/all-skills', {error, skills})
+        if(error) {
+            req.error = error
+        }
+        return next()
     })
 }
 
 function removeById(req, res) {
-    skillsDB.removeById(req.params.id, (error, skills) => {
-        return res.render('skills/all-skills', {error, skills})
+    skillsDB.removeById(req.params.id, (error, skills, skill) => {
+        return res.render('skills/all-skills', {error, skills, skill})
     })
 }

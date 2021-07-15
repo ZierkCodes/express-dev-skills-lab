@@ -18,9 +18,9 @@ const skills = [
 
 let idTracker = 10007
 
-
 const createSkill = (data, callback) => {
     try {
+        console.log(data.isDifficult)
         if(data.name === '') throw new Error ('Please enter a valid skill name.')
         if(data.isDifficult === undefined) throw new Error ('Please choose a difficulty.')
         if(parseInt(data.aptitude) === null || parseInt(data.aptitude) === NaN) throw new Error ('Please select your aptitude for this skill.')
@@ -83,7 +83,7 @@ const removeById = (id, callback) => {
         if (!skill) throw new Error ('No skill was found.')
         const index = skills.findIndex(skill => skill._id === parseInt(id))
         skills.splice(index, 1)
-        return callback(null, skills)
+        return callback(null, skills, skill)
     } catch (error) {
         return callback(error, null)
     }
