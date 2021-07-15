@@ -3,7 +3,7 @@ const router = Router()
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  return res.render('index', { title: 'Express' })
+  return res.redirect('/skills')
 })
 
 export { 

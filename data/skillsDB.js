@@ -11,16 +11,18 @@ const skills = [
     {_id: 10001, name: 'HTML', isDifficult: false, aptitude: 5, description: 'The HyperText Markup Language, or HTML is the standard markup language for documents designed to be displayed in a web browser. It can be assisted by technologies such as Cascading Style Sheets and scripting languages such as JavaScript.'},
     {_id: 10002, name: 'CSS', isDifficult: false, aptitude: 4, description: 'Cascading Style Sheets is a style sheet language used for describing the presentation of a document written in a markup language such as HTML. CSS is a cornerstone technology of the World Wide Web, alongside HTML and JavaScript.'},
     {_id: 10003, name: 'JavaScript', isDifficult: true, aptitude: 3, description: 'JavaScript, often abbreviated as JS, is a programming language that conforms to the ECMAScript specification. JavaScript is high-level, often just-in-time compiled, and multi-paradigm. It has curly-bracket syntax, dynamic typing, prototype-based object-orientation, and first-class functions.'},
-    {_id: 10004, name: 'Express', isDifficult: true, aptitude: 2, description: 'Express.js, or simply Express, is a back end web application framework for Node.js, released as free and open-source software under the MIT License. It is designed for building web applications and APIs. It has been called the de facto standard server framework for Node.js.'}
+    {_id: 10004, name: 'Express', isDifficult: true, aptitude: 2, description: 'Express.js, or simply Express, is a back end web application framework for Node.js, released as free and open-source software under the MIT License. It is designed for building web applications and APIs. It has been called the de facto standard server framework for Node.js.'},
+    {_id: 10005, name: 'MongoDB', isDifficult: false, aptitude: 2, description: 'MongoDB is a source-available cross-platform document-oriented database program. Classified as a NoSQL database program, MongoDB uses JSON-like documents with optional schemas.'},
+    {_id: 10006, name: 'Node.js', isDifficult: false, aptitude: 4, description: 'Node.js is an open-source, cross-platform, back-end JavaScript runtime environment that runs on the V8 engine and executes JavaScript code outside a web browser.'}
 ]
 
-let idTracker = 10005
+let idTracker = 10007
 
 
 const createSkill = (data, callback) => {
     try {
         if(data.name === '') throw new Error ('Please enter a valid skill name.')
-        if(typeof JSON.parse(data.isDifficult) !== 'boolean') throw new Error ('Please choose a difficulty.')
+        if(data.isDifficult === undefined) throw new Error ('Please choose a difficulty.')
         if(parseInt(data.aptitude) === null || parseInt(data.aptitude) === NaN) throw new Error ('Please select your aptitude for this skill.')
         if(data.description === '') throw new Error ('Please enter a description.')
         skills.push({
@@ -61,7 +63,7 @@ const findAll = (callback) => {
 const updateById = (id, data, callback) => {
     try {
         if(data.name === '') throw new Error ('Please enter a valid skill name.')
-        if(typeof JSON.parse(data.isDifficult) !== 'boolean') throw new Error ('Please choose a difficulty.')
+        if(data.isDifficult === undefined) throw new Error ('Please choose a difficulty.')
         if(parseInt(data.aptitude) === null || parseInt(data.aptitude) === NaN) throw new Error ('Please select your aptitude for this skill.')
         if(data.description === '') throw new Error ('Please enter a description.')
         const index = skills.findIndex(skill => skill._id === parseInt(id))

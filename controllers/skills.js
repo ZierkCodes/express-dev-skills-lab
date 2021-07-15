@@ -8,9 +8,12 @@ export {
     removeById
 }
 
-function createSkill(req, res) {
+function createSkill(req, res, next) {
     skillsDB.createSkill(req.body, (error, skills) => {
-        res.redirect('/skills')
+        if(error) {
+            req.error = error
+        }
+        return next()
     }) 
 }
 
@@ -25,8 +28,12 @@ function findById(req, res) {
 
 function findAll(req, res) {
     skillsDB.findAll((error, skills) => {
+        if(!error && req.error) {
+            error = req.error
+        }
         return res.render('skills/all-skills', {error, skills})
     })
+    
 }
 
 function updateById(req, res) {
