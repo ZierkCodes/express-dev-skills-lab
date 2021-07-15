@@ -20,37 +20,23 @@ function findById(req, res) {
             return res.json(error)
         }
         return res.json(skill)
-        // res.render('/skills/single-skill', {})
     })
 }
 
 function findAll(req, res) {
     skillsDB.findAll((error, skills) => {
-        if(error) {
-            return res.json(error)
-        }
-        return res.json(skills)
-        // res.render('/skills/all-skills', {})
+        return res.render('skills/all-skills', {error, skills})
     })
 }
 
 function updateById(req, res) {
-    skillsDB.updateById(req.params.id, req.body, (error, skill) => {
-        console.log(error)
-        console.log(skill)
-        if(error) {
-            return res.json(error)
-        }
-        return res.json(skill)
-
+    skillsDB.updateById(req.params.id, req.body, (error, skills) => {
+        return res.render('skills/all-skills', {error, skills})
     })
 }
 
 function removeById(req, res) {
     skillsDB.removeById(req.params.id, (error, skills) => {
-        if(error) {
-            return res.json(error)
-        }
-        return res.json(skills)
+        return res.render('skills/all-skills', {error, skills})
     })
 }

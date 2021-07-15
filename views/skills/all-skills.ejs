@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/uikit.min.css" />
+    <script src="../js/uikit.min.js"></script>
+    <script src="../js/uikit-icons.min.js"></script>
+    <title>Dev Skills List</title>
+</head>
+<body>
+    <div class="uk-section uk-section-muted">
+        <div class="uk-container uk-margin-large uk-margin-top">
+            <div class="uk-flex uk-flex-between">
+                <h1>Dev Skills List</h1>
+                <button class="uk-button uk-button-primary uk-margin-small-top uk-margin-small-bottom" type="button" uk-toggle="target: #add-skill-modal">Add a Skill</button>
+            </div>
+
+            <% if(error) { %>
+                <div class="uk-alert-danger" uk-alert>
+                    <a class="uk-alert-close" uk-close></a>
+                    <p><%= error %> </p>
+                </div>
+            <% } else { %> 
+            
+            <div class="uk-child-width-1-3@s uk-grid-match" uk-grid>
+
+                <% skills.forEach((skill, index) => { %>
+                    <div>
+                        <div class="uk-card uk-card-default uk-card-hover uk-card-body uk-flex uk-flex-column">
+                            <h3 class="uk-card-title"><%= skill.name %>
+                            
+                                <% if(skill.isDifficult) { %> 
+                                    <span class="uk-label uk-label-danger" style="margin-bottom: 4px;">Hard</span>
+                                <% } else if (!skill.isDifficult) { %>
+                                    <span class="uk-label uk-label-success" style="margin-bottom: 4px;">Easy</span>
+                                <% } %> 
+                                </h3>
+                                <p class="uk-margin-remove">
+                                    <span class="uk-text-small uk-text-uppercase uk-text-secondary">Proficiency</span><br />
+                                    <% for(let i = 0; i < skill.aptitude; i++) { %>  
+                                        <span uk-icon="bolt" class="uk-text-primary"></span>
+                                    <% } %> 
+                                </p>
+                                <p style="margin-bottom: auto"><span class="uk-text-small uk-text-uppercase uk-text-secondary">Description</span><br /><%= `${skill.description.substring(0,120)}...` %> </p><br />
+
+                                <a href=<%= `#modal-group-${index}-1` %> class="uk-button uk-button-default" style="margin-top: auto" uk-toggle>View Details</a>
+                        </div>
+                    </div>
+                <% }) %> 
+            </div>
+
+            <% } %>
+        </div>
+    </div>
+
+    <!-- This is the modal -->
+    <div id="add-skill-modal" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">Add a Skill</h2>
+            
+
+
+            <form class="uk-form-stacked" action="/skills/add" method="POST">
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="name">Text</label>
+                        <input id="name" name="name" class="uk-input" type="text" placeholder="Skill Name">
+                    </div>
+
+
+
+                    <div class="uk-margin">
+                        <div class="uk-form-label">Difficulty</div>
+                        <div class="uk-form-controls">
+                            <label><input class="uk-radio" type="radio" name="isDifficult" value="false"> Easy</label><br>
+                            <label><input class="uk-radio" type="radio" name="isDifficult" value="true"> Hard</label>
+                        </div>
+                    </div>
+
+
+                    <div>
+                        <label class="uk-form-label">Description</label>
+                        <textarea class="uk-textarea" rows="5" name="description" placeholder="Description"></textarea>
+                    </div>
+
+
+
+                    <div class="uk-margin">
+                        <div class="uk-form-label uk-margin-remove">Proficiency</div>
+                        <div class="uk-flex uk-flex-between uk-flex-bottom">
+                            <p style="height: 10px;"><span uk-icon="bolt" class="uk-text-primary"></span></p>
+                            <p style="height: 10px;"><span uk-icon="bolt" class="uk-text-primary"></span></p>
+                            <p style="height: 10px;"><span uk-icon="bolt" class="uk-text-primary"></span></p>
+                            <p style="height: 10px;"><span uk-icon="bolt" class="uk-text-primary"></span></p>
+                            <p style="height: 10px;"><span uk-icon="bolt" class="uk-text-primary"></span></p>
+                        </div>
+                        <input class="uk-range" name="aptitude" type="range" value="1" min="1" max="5" step="1">
+                    </div>
+
+
+                    <p class="uk-text-right">
+                        <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+                        <button class="uk-button uk-button-primary" type="submit">Save</button>
+                    </p>
+            </form>
+        </div>
+    </div>
+
+<% if(!error) { %>
+    <% skills.forEach((skill, index) => { %> 
+        <div id=<%= `modal-group-${index}-1` %> uk-modal>
+            <div class="uk-modal-dialog">
+                <button class="uk-modal-close-default" type="button" uk-close></button>
+                <div class="uk-modal-header">
+                    <h2 class="uk-modal-title"><%= skill.name %>
+                            
+                        <% if(skill.isDifficult) { %> 
+                            <span class="uk-label uk-label-danger" style="margin-bottom: 4px;">Hard</span>
+                        <% } else if (!skill.isDifficult) { %>
+                            <span class="uk-label uk-label-success" style="margin-bottom: 4px;">Easy</span>
+                        <% } %> </h2>
+                </div>
+                <div class="uk-modal-body">
+                    
+                        <p class="uk-margin-remove">
+                            <span class="uk-text-small uk-text-uppercase uk-text-secondary">Proficiency</span><br />
+                            <% for(let i = 0; i < skill.aptitude; i++) { %>  
+                                <span uk-icon="bolt" class="uk-text-primary"></span>
+                            <% } %> 
+                        </p>
+                        <p><span class="uk-text-small uk-text-uppercase uk-text-secondary">Description</span><br /><%= skill.description %> </p><br />
+                </div>
+                <div class="uk-modal-footer uk-text-right">
+                    <a href=<%= `#modal-group-${index}-2` %> class="uk-button uk-button-primary" uk-toggle>Edit Skill</a>
+                    <a href=<%= `#modal-group-${index}-3` %> class="uk-button uk-button-danger" uk-toggle>Remove Skill</a>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+        <div id=<%= `modal-group-${index}-2` %> uk-modal>
+            <div class="uk-modal-dialog">
+                <button class="uk-modal-close-default" type="button" uk-close></button>
+                <div class="uk-modal-header">
+                    <h2 class="uk-modal-title">Edit Skill</h2>
+                </div>
+                <div class="uk-modal-body">
+                    <form class="uk-form-stacked" id="edit-skill-<%= skill._id %>" action=<%= `/skills/${skill._id}?_method=PUT` %> method="POST">
+                        <div class="uk-margin">
+                            <label class="uk-form-label" for="name">Skill Name</label>
+                            <input id="name" name="name" class="uk-input" type="text" placeholder="Skill Name" value=<%= `${skill.name}` %>>
+                        </div>
+    
+    
+    
+                        <div class="uk-margin">
+                            <div class="uk-form-label">Difficulty</div>
+                            <div class="uk-form-controls">
+                                <label><input class="uk-radio" type="radio" name="isDifficult" value="false" <% if(!skill.isDifficult) { %> checked="checked" <% } %>> Easy</label><br>
+                                <label><input class="uk-radio" type="radio" name="isDifficult" value="true" <% if(skill.isDifficult) { %> checked="checked" <% } %>> Hard</label>
+                            </div>
+                        </div>
+    
+    
+                        <div>
+                            <label class="uk-form-label">Description</label>
+                            <textarea class="uk-textarea" rows="5" name="description" placeholder="Description"><%= skill.description %></textarea>
+                        </div>
+    
+    
+    
+                        <div class="uk-margin">
+                            <div class="uk-form-label uk-margin-remove">Proficiency</div>
+                            <div class="uk-flex uk-flex-between uk-flex-bottom">
+                                <p style="height: 10px;"><span uk-icon="bolt" class="uk-text-primary"></span></p>
+                                <p style="height: 10px;"><span uk-icon="bolt" class="uk-text-primary"></span></p>
+                                <p style="height: 10px;"><span uk-icon="bolt" class="uk-text-primary"></span></p>
+                                <p style="height: 10px;"><span uk-icon="bolt" class="uk-text-primary"></span></p>
+                                <p style="height: 10px;"><span uk-icon="bolt" class="uk-text-primary"></span></p>
+                            </div>
+                            <input class="uk-range" name="aptitude" type="range" value="<%= skill.aptitude %>" min="1" max="5" step="1">
+                        </div>
+    
+    
+                        <p class="uk-text-right">
+                            
+                        </p>
+                    </form>
+                </div>
+                <div class="uk-modal-footer uk-text-right">
+                    <a href=<%= `#modal-group-${index}-1` %> class="uk-button uk-button-default" uk-toggle>Cancel</a>
+                    <button class="uk-button uk-button-primary" type="submit" form="edit-skill-<%= skill._id %>">Save</button>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+        <div id=<%= `modal-group-${index}-3` %> uk-modal>
+            <div class="uk-modal-dialog">
+                <button class="uk-modal-close-default" type="button" uk-close></button>
+                <div class="uk-modal-header">
+                    <h2 class="uk-modal-title">Remove Skill</h2>
+                </div>
+                <div class="uk-modal-body">
+                    <form class="uk-form-stacked" id="remove-skill-<%= skill._id %>" action=<%= `/skills/${skill._id}?_method=DELETE` %> method="POST">
+                        <div class="uk-alert-danger" uk-alert>
+                            <p>This action cannot be undone. Are you sure you want to delete <b><%= skill.name %></b>?</p>
+                        </div>
+                    </form>
+                </div>
+                <div class="uk-modal-footer uk-text-right">
+                    <a href=<%= `#modal-group-${index}-1` %> class="uk-button uk-button-default" uk-toggle>Cancel</a>
+                    <button class="uk-button uk-button-primary" type="submit" form="remove-skill-<%= skill._id %>">Save</button>
+                </div>
+            </div>
+
+        </div>
+    <% }) %> 
+<% } %>
+</body>
+</html>
